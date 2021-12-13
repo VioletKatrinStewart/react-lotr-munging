@@ -15,16 +15,18 @@ function App() {
   }, []);
 
   const getFilms = async () => {
-    const resp = await fetch('https://the-one-api.dev/v2/movie/', {
+    const resp = await fetch(`${process.env.REACT_APP_SUPABASE_URL}/rest/v1/films`, {
       headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+        apikey: process.env.REACT_APP_SUPABASE_KEY,
+        Authorization: `Bearer ${process.env.REACT_APP_SUPABASE_KEY}`,
       },
     });
     const data = await resp.json();
     console.log(data);
-    const transformData = data.docs.map((film) => [
-      film.name,
-      film.boxOfficeRevenueInMillions,
+    const transformData = data.map((film) => [
+      film.id,
+      film.title,
+      film.box_office_total,
       film.academyAwardNominations,
     ]);
 
@@ -32,13 +34,21 @@ function App() {
   };
 
   const getCharacters = async () => {
-    const resp = await fetch('https://the-one-api.dev/v2/movie/', {
+    const resp = await fetch(`${process.env.REACT_APP_SUPABASE_URL}/rest/v1/characters`, {
       headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+        apikey: process.env.REACT_APP_SUPABASE_KEY,
+        Authorization: `Bearer ${process.env.REACT_APP_SUPABASE_KEY}`,
       },
     });
 
-    return [];
+    const data = await resp.json();
+    const transformData = data.map((character) => ({
+      ...character,
+      dates:
+        character.birth && character.death ? `${character.birth} - ${character.death}` : 'Unknown',
+    }));
+
+    setCharacters(transformData);
   };
 
   return (
