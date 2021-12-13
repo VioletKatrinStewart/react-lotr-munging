@@ -1,6 +1,6 @@
 import './App.css';
 import { useEffect, useState } from 'react';
-import { BrowserRouter, NavLink } from 'react-router-dom';
+import { BrowserRouter, NavLink, Switch, Route } from 'react-router-dom';
 
 import CharacterList from './components/Characters/CharacterList';
 import FilmList from './components/Films/FilmList';
@@ -28,6 +28,12 @@ function App() {
     // 3. Set the resulting transformation as state using setFilms
     // 4. You'll know it works if the films show up on the page
     return [];
+    const resp = await fetch('https://the-one-api.dev/v2/movie/', {
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+      },
+    });
+    return [resp];
   };
 
   const getCharacters = async () => {
@@ -58,6 +64,16 @@ function App() {
           </NavLink>
         </header>
         {/* ADD YOUR ROUTES HERE */}
+        <Switch>
+          <Route exact path="/characters">
+            <h1>Characters</h1>
+            <CharacterList characters={characters} />
+          </Route>
+          <Route exact path="/films">
+            <h1>Films</h1>
+            <FilmList films={films} />
+          </Route>
+        </Switch>
       </BrowserRouter>
     </div>
   );
