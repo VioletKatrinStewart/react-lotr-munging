@@ -27,12 +27,13 @@ function App() {
 
     // 3. Set the resulting transformation as state using setFilms
     // 4. You'll know it works if the films show up on the page
-    return [];
     const resp = await fetch('https://the-one-api.dev/v2/movie/', {
       headers: {
         Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
       },
     });
+    const data = await resp.json();
+    console.log(data);
     return [resp];
   };
 
