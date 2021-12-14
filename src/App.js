@@ -22,7 +22,6 @@ function App() {
       },
     });
     const data = await resp.json();
-    console.log(data);
     const transformData = data.map((film) => [
       film.title,
       film.title.trim().toLowerCase().split(' ').join('-'),
